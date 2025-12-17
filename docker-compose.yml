@@ -1,0 +1,24 @@
+services:
+    php-cli:
+        build:
+            context: docker/dev/php-cli
+        volumes:
+            -   ./:/app
+        environment:
+            ES_PASSWORD: ${ES_PASSWORD}
+            ES_USER: ${ES_USER}
+            ES_URL: ${ES_URL}
+            BULK_FILE: ${BULK_FILE}
+
+    elasticsearch:
+        image: elasticsearch:8.8.0
+        ports:
+            - "9200:9200"
+        environment:
+            discovery.type: single-node
+            xpack.security.enabled: false
+            ELASTIC_PASSWORD: ${ES_PASSWORD}
+        deploy:
+            resources:
+                limits:
+                    memory: 4096M
